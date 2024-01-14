@@ -11,6 +11,15 @@ class Square {
 
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
+    let possibleMoves = [];
+
+console.log(`finding moves for ${xCoordinate}, ${yCoordinate}`);
+
+    // We have to take into account the edges of the board and return all possible moves from this space
+
+
+
+
   }
 }
 
@@ -33,8 +42,9 @@ class Board {
         y = 0;
       }
     }
+    return board
   }
-  
+
   knightMoves(startPosition, endPosition) {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
@@ -43,3 +53,4 @@ class Board {
 
 
 let board1 = new Board;
+console.log(board1.contents[5])
