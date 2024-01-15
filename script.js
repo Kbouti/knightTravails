@@ -85,11 +85,21 @@ class Board {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
 
+    let movesCount = 0;
+    let moves = [];
+
     let startingX = startPosition[0];
     let startingY = startPosition[1];
-
     let endingX = endPosition[0];
     let endingY = endPosition[1];
+
+
+    if (startingX === endingX && startingY === endingY){
+        console.log(`Start and end are the same square`);
+        console.log(`movesCount: ${movesCount}`);
+        console.log(`moves: ${moves}`);
+        return moves
+    }
 
     console.log(
       `Getting possible moves for start position: [${startingX}, ${startingY}]`
@@ -111,4 +121,4 @@ let testNode = board1.contents[58];
 console.log(testNode);
 console.log(testNode.findPossibleMoves());
 
-board1.knightMoves([0, 0], [3, 3]);
+board1.knightMoves([3, 3], [0, 7]);
