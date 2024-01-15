@@ -99,13 +99,19 @@ class Board {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
 
-    let movesCount = 0;
-    let moves = [];
 
     let startingX = startPosition[0];
     let startingY = startPosition[1];
     let endingX = endPosition[0];
     let endingY = endPosition[1];
+
+
+    let currentNode = this.findSquare(startingX, startingY);
+// This might be the route to go if we wanna get recursive
+
+    let movesCount = 0;
+    let moves = [[startingX, startingY]];
+
 
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
@@ -126,6 +132,14 @@ class Board {
     let canWeMakeIt = startingSquare.canWeMoveHere(endingX, endingY);
     console.log(`Can we make it: ${canWeMakeIt}`);
 
+        if (canWeMakeIt){
+            moves.push([endingX, endingY]);
+            movesCount++;
+            return moves
+        }
+
+
+
     // Maybe a while loop:
     // While current position !== endPosition:
     // moveCount ++
@@ -141,4 +155,4 @@ let testNode = board1.contents[58];
 console.log(testNode);
 console.log(testNode.findPossibleMoves());
 
-board1.knightMoves([3, 3], [4, 1]);
+console.log(board1.knightMoves([0, 0], [3, 3]));
