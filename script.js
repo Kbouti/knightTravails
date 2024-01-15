@@ -1,3 +1,16 @@
+function logCount(count) {
+  console.log(`# of moves: ${count}`);
+}
+
+function logMoves(array) {
+  let string = `moves: `;
+  string += `[${array[0][0]},${array[0][1]}]`;
+  for (let i = 1; i < array.length; i++) {
+    string += ` -> [${array[i][0]},${array[i][1]}] `;
+  }
+  console.log(string);
+}
+
 class Square {
   constructor(index, xCoordinate, yCoordinate) {
     this.index = index;
@@ -100,50 +113,41 @@ class Board {
     let startingY = startPosition[1];
     let endingX = endPosition[0];
     let endingY = endPosition[1];
-
     let currentNode = this.findSquare(startingX, startingY);
-    console.log(`currentNode: ${currentNode}`);
-    // currentNode becomes a reference to the starting node object
-    // This might be the route to go if we wanna get recursive
-
     let movesCount = 0;
     let moves = [[startingX, startingY]];
 
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
-      console.log(`movesCount: ${movesCount}`);
-      console.log(`moves: ${moves}`);
-      return moves;
+      logCount(movesCount);
+      logMoves(moves);
+      return;
     }
-    // moves.push([endingX, endingY]);
+
     movesCount++;
-
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
-    console.log(oneMoveAway);
 
-    // if (oneMoveAway) {
-    //   return moves;
-    // }
+    if (oneMoveAway) {
+      moves.push([endingX, endingY]);
+      logCount(movesCount);
+      logMoves(moves);
+      return;
+    }
 
     // ************************************************************************************************************
-    // I need to fix the way the squares are added to the moves array
     // I may need to use async/await to compare each nodes potential paths to the target and then choose the shortest path
     // ************************************************************************************************************
 
     while (oneMoveAway == false) {
-      console.log(`currentNode again: ${currentNode}`);
-
       let possibleMoves = currentNode.findPossibleMoves();
       for (let i = 0; i < possibleMoves.length; i++) {
         currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
-
+        movesCount++;
         moves.push([possibleMoves[i][0], possibleMoves[i][1]]);
 
         if (currentNode.canWeMoveHere(endPosition)) {
           oneMoveAway = true;
-          movesCount++;
           moves.push(endPosition);
-
           logCount(movesCount);
           logMoves(moves);
           return;
@@ -156,25 +160,23 @@ class Board {
   }
 }
 
-let board1 = new Board();
 
+
+// ********************************************************************************************
+// Testing Below:
+
+
+let board1 = new Board();
 let testNode = board1.contents[58];
 
-// console.log(testNode);
-// console.log(testNode.findPossibleMoves());
 
-// board1.knightMoves([0, 0], [1, 2]);
+// board1.knightMoves([0, 0], [0, 0]);
+board1.knightMoves([0, 0], [1, 2]);
 board1.knightMoves([0, 0], [3, 3]);
+board1.knightMoves([0, 0], [3, 4]);
 
-function logCount(count) {
-  console.log(`# of moves: ${count}`);
-}
 
-function logMoves(array) {
-  let string = `moves: `;
-    string += `[${array[0][0]},${array[0][1]}]`
-  for (let i = 1; i < array.length; i++) {
-    string += ` -> [${array[i][0]},${array[i][1]}] `;
-  }
-  console.log(string);
-}
+
+// board1.knightMoves([0,0], [7,7]);
+// It can't do this one^^^
+// Takes a while then nothing happens
