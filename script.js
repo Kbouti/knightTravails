@@ -46,6 +46,20 @@ class Square {
     }
     return possibleMoves;
   }
+
+  canWeMoveHere(x, y) {
+    // Returns true if we can move from this spot to the given target spot in one move
+    let canWeMove = false;
+    let possibleMoves = this.findPossibleMoves();
+    for (let i = 0; i < possibleMoves.length; i++) {
+      let square = possibleMoves[i];
+      if (square[0] == x && square[1] == y) {
+        canWeMove = true;
+        return canWeMove;
+      }
+    }
+    return canWeMove;
+  }
 }
 
 class Board {
@@ -93,12 +107,11 @@ class Board {
     let endingX = endPosition[0];
     let endingY = endPosition[1];
 
-
-    if (startingX === endingX && startingY === endingY){
-        console.log(`Start and end are the same square`);
-        console.log(`movesCount: ${movesCount}`);
-        console.log(`moves: ${moves}`);
-        return moves
+    if (startingX === endingX && startingY === endingY) {
+      console.log(`Start and end are the same square`);
+      console.log(`movesCount: ${movesCount}`);
+      console.log(`moves: ${moves}`);
+      return moves;
     }
 
     console.log(
@@ -110,7 +123,14 @@ class Board {
     let possibleFirstMoves = startingSquare.findPossibleMoves();
     console.log(possibleFirstMoves);
 
-    // Need a way to target the appropriate Node when all we have are x and y coordinates, not a reference to the node
+    let canWeMakeIt = startingSquare.canWeMoveHere(endingX, endingY);
+    console.log(`Can we make it: ${canWeMakeIt}`);
+
+    // Maybe a while loop:
+    // While current position !== endPosition:
+    // moveCount ++
+    // move.push(currentPosition)
+    // nextmoves = nextMoves
   }
 }
 
@@ -121,4 +141,4 @@ let testNode = board1.contents[58];
 console.log(testNode);
 console.log(testNode.findPossibleMoves());
 
-board1.knightMoves([3, 3], [0, 7]);
+board1.knightMoves([3, 3], [4, 1]);
