@@ -1,5 +1,3 @@
-console.log(`Hello from knights`);
-
 class Square {
   constructor(index, xCoordinate, yCoordinate) {
     this.index = index;
@@ -11,7 +9,6 @@ class Square {
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
     let possibleMoves = [];
-    console.log(`finding moves for ${xCoordinate}, ${yCoordinate}`);
     if (xCoordinate < 7 && yCoordinate < 6) {
       let move1 = [xCoordinate + 1, yCoordinate + 2];
       possibleMoves.push(move1);
@@ -47,13 +44,13 @@ class Square {
     return possibleMoves;
   }
 
-  canWeMoveHere(x, y) {
+  canWeMoveHere(targetPosition) {
     // Returns true if we can move from this spot to the given target spot in one move
     let canWeMove = false;
     let possibleMoves = this.findPossibleMoves();
     for (let i = 0; i < possibleMoves.length; i++) {
       let square = possibleMoves[i];
-      if (square[0] == x && square[1] == y) {
+      if (square[0] == targetPosition[0] && square[1] == targetPosition[1]) {
         canWeMove = true;
         return canWeMove;
       }
@@ -99,19 +96,18 @@ class Board {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
 
-
     let startingX = startPosition[0];
     let startingY = startPosition[1];
     let endingX = endPosition[0];
     let endingY = endPosition[1];
 
-
     let currentNode = this.findSquare(startingX, startingY);
-// This might be the route to go if we wanna get recursive
+    console.log(`currentNode: ${currentNode}`);
+    // currentNode becomes a reference to the starting node object
+    // This might be the route to go if we wanna get recursive
 
     let movesCount = 0;
     let moves = [[startingX, startingY]];
-
 
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
@@ -119,27 +115,37 @@ class Board {
       console.log(`moves: ${moves}`);
       return moves;
     }
+    moves.push([endingX, endingY]);
+    movesCount++;
 
-    console.log(
-      `Getting possible moves for start position: [${startingX}, ${startingY}]`
-    );
-    console.log(`Target end position: [${endingX}, ${endingY}]`);
+    let oneMoveAway = currentNode.canWeMoveHere(endPosition);
+    console.log(oneMoveAway);
 
-    let startingSquare = this.findSquare(startingX, startingY);
-    let possibleFirstMoves = startingSquare.findPossibleMoves();
-    console.log(possibleFirstMoves);
+    if (currentNode.canWeMoveHere(endPosition)) {
+      oneMoveAway = true;
+      return moves;
+    }
 
-    let canWeMakeIt = startingSquare.canWeMoveHere(endingX, endingY);
-    console.log(`Can we make it: ${canWeMakeIt}`);
+    while (oneMoveAway == false) {
+        console.log(`currentNode again: ${currentNode}`);
 
-        if (canWeMakeIt){
-            moves.push([endingX, endingY]);
-            movesCount++;
-            return moves
-        }
+      let possibleMoves = currentNode.findPossibleMoves();
+      for (let i = 0; i < possibleMoves.length; i++) {
+        currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
 
+        moves.push(this.knightMoves([possibleMoves[i][0], possibleMoves[i][1]], endPosition));
 
 
+        if (currentNode.canWeMoveHere(endPosition)) {
+            oneMoveAway = true;
+            return moves;
+          }
+      
+
+
+
+      }
+    }
     // Maybe a while loop:
     // While current position !== endPosition:
     // moveCount ++
@@ -152,7 +158,8 @@ let board1 = new Board();
 
 let testNode = board1.contents[58];
 
-console.log(testNode);
-console.log(testNode.findPossibleMoves());
+// console.log(testNode);
+// console.log(testNode.findPossibleMoves());
 
+// console.log(board1.knightMoves([0, 0], [1, 2]));
 console.log(board1.knightMoves([0, 0], [3, 3]));
