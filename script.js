@@ -7,14 +7,10 @@ class Square {
   }
 
   findPossibleMoves() {
-    // Write a function that outputs a list of all the possible squares a knight could move to from here
-
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
     let possibleMoves = [];
-
     console.log(`finding moves for ${xCoordinate}, ${yCoordinate}`);
-
     if (xCoordinate < 7 && yCoordinate < 6) {
       let move1 = [xCoordinate + 1, yCoordinate + 2];
       possibleMoves.push(move1);
@@ -47,9 +43,9 @@ class Square {
       let move8 = [xCoordinate - 1, yCoordinate + 2];
       possibleMoves.push(move8);
     }
-
     return possibleMoves;
   }
+
 }
 
 class Board {
@@ -77,6 +73,23 @@ class Board {
   knightMoves(startPosition, endPosition) {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
+
+    let startingX = startPosition[0]
+    let startingY = startPosition[1]
+
+    let endingX = endPosition[0];
+    let endingY = endPosition[1];
+
+    console.log(`Start position: [${startingX}, ${startingY}]`);
+    console.log(`End position: [${endingX}, ${endingY}]`);
+
+
+console.log(`Getting possible moves for start position`);
+
+// Need a way to target the appropriate Node when all we have are x and y coordinates, not a reference to the node
+
+
+
   }
 }
 
@@ -86,3 +99,6 @@ let testNode = board1.contents[58];
 
 console.log(testNode);
 console.log(testNode.findPossibleMoves());
+
+
+board1.knightMoves([0,0], [3,3]);
