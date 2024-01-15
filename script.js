@@ -1,7 +1,8 @@
 console.log(`Hello from knights`);
 
 class Square {
-  constructor(xCoordinate, yCoordinate) {
+  constructor(index, xCoordinate, yCoordinate) {
+    this.index = index;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
   }
@@ -45,7 +46,6 @@ class Square {
     }
     return possibleMoves;
   }
-
 }
 
 class Board {
@@ -58,7 +58,7 @@ class Board {
     let x = 0;
     let y = 0;
     for (let i = 0; i < 64; i++) {
-      board.push(new Square(x, y));
+      board.push(new Square(i, x, y));
       if (y < 8) {
         y++;
       }
@@ -70,26 +70,37 @@ class Board {
     return board;
   }
 
+  findSquare(x, y) {
+    for (let i = 0; i < this.contents.length; i++) {
+      if (
+        this.contents[i].xCoordinate == x &&
+        this.contents[i].yCoordinate == y
+      ) {
+        return this.contents[i];
+      }
+    }
+  }
+
   knightMoves(startPosition, endPosition) {
     // Takes two arrays as arguments
     // Each array is 2 numbers, the xCoordiante and the yCoordinate
 
-    let startingX = startPosition[0]
-    let startingY = startPosition[1]
+    let startingX = startPosition[0];
+    let startingY = startPosition[1];
 
     let endingX = endPosition[0];
     let endingY = endPosition[1];
 
-    console.log(`Start position: [${startingX}, ${startingY}]`);
-    console.log(`End position: [${endingX}, ${endingY}]`);
+    console.log(
+      `Getting possible moves for start position: [${startingX}, ${startingY}]`
+    );
+    console.log(`Target end position: [${endingX}, ${endingY}]`);
 
+    let startingSquare = this.findSquare(startingX, startingY);
+    let possibleFirstMoves = startingSquare.findPossibleMoves();
+    console.log(possibleFirstMoves);
 
-console.log(`Getting possible moves for start position`);
-
-// Need a way to target the appropriate Node when all we have are x and y coordinates, not a reference to the node
-
-
-
+    // Need a way to target the appropriate Node when all we have are x and y coordinates, not a reference to the node
   }
 }
 
@@ -100,5 +111,4 @@ let testNode = board1.contents[58];
 console.log(testNode);
 console.log(testNode.findPossibleMoves());
 
-
-board1.knightMoves([0,0], [3,3]);
+board1.knightMoves([0, 0], [3, 3]);
