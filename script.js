@@ -16,7 +16,10 @@ class Square {
 console.log(`finding moves for ${xCoordinate}, ${yCoordinate}`);
 
     // We have to take into account the edges of the board and return all possible moves from this space
-
+// The first possible spot is up two, right 1
+// Then right two up one
+// then right two down one
+// etc. Check if each of these are possible, if yes add it to the possibleMoves array and return it at the end
 
 
 
@@ -53,4 +56,8 @@ class Board {
 
 
 let board1 = new Board;
-console.log(board1.contents[5])
+
+let testNode = board1.contents[0];
+
+console.log(testNode)
+testNode.findPossibleMoves();
