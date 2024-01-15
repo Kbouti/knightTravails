@@ -115,42 +115,44 @@ class Board {
       console.log(`moves: ${moves}`);
       return moves;
     }
-    moves.push([endingX, endingY]);
+    // moves.push([endingX, endingY]);
     movesCount++;
 
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
     console.log(oneMoveAway);
 
-    if (currentNode.canWeMoveHere(endPosition)) {
-      oneMoveAway = true;
-      return moves;
-    }
+    // if (oneMoveAway) {
+    //   return moves;
+    // }
+
+    // ************************************************************************************************************
+    // I need to fix the way the squares are added to the moves array
+    // I may need to use async/await to compare each nodes potential paths to the target and then choose the shortest path
+    // ************************************************************************************************************
 
     while (oneMoveAway == false) {
-        console.log(`currentNode again: ${currentNode}`);
+      console.log(`currentNode again: ${currentNode}`);
 
       let possibleMoves = currentNode.findPossibleMoves();
       for (let i = 0; i < possibleMoves.length; i++) {
         currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
 
-        moves.push(this.knightMoves([possibleMoves[i][0], possibleMoves[i][1]], endPosition));
-
+        moves.push([possibleMoves[i][0], possibleMoves[i][1]]);
 
         if (currentNode.canWeMoveHere(endPosition)) {
-            oneMoveAway = true;
-            return moves;
-          }
-      
+          oneMoveAway = true;
+          movesCount++;
+          moves.push(endPosition);
 
-
-
+          logCount(movesCount);
+          logMoves(moves);
+          return;
+        }
       }
     }
-    // Maybe a while loop:
-    // While current position !== endPosition:
-    // moveCount ++
-    // move.push(currentPosition)
-    // nextmoves = nextMoves
+    logCount(movesCount);
+    logMoves(moves);
+    return moves;
   }
 }
 
@@ -161,5 +163,18 @@ let testNode = board1.contents[58];
 // console.log(testNode);
 // console.log(testNode.findPossibleMoves());
 
-// console.log(board1.knightMoves([0, 0], [1, 2]));
-console.log(board1.knightMoves([0, 0], [3, 3]));
+// board1.knightMoves([0, 0], [1, 2]);
+board1.knightMoves([0, 0], [3, 3]);
+
+function logCount(count) {
+  console.log(`# of moves: ${count}`);
+}
+
+function logMoves(array) {
+  let string = `moves: `;
+    string += `[${array[0][0]},${array[0][1]}]`
+  for (let i = 1; i < array.length; i++) {
+    string += ` -> [${array[i][0]},${array[i][1]}] `;
+  }
+  console.log(string);
+}
