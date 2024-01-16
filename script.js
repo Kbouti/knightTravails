@@ -16,6 +16,7 @@ class Square {
     this.index = index;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
+    this.possibleMoves = this.findPossibleMoves();
   }
 
   findPossibleMoves() {
@@ -58,7 +59,7 @@ class Square {
   }
 
   canWeMoveHere(targetPosition) {
-    // Returns true if we can move from this spot to the given target spot in one move
+    // Returns true if targetPosition is among possible moves
     let canWeMove = false;
     let possibleMoves = this.findPossibleMoves();
     for (let i = 0; i < possibleMoves.length; i++) {
@@ -69,6 +70,10 @@ class Square {
       }
     }
     return canWeMove;
+  }
+
+  async pathToTarget(targetPosition) {
+    //I think we need an async function to call here on the square so can ask for several possible paths and compare to find the shortest
   }
 }
 
@@ -136,6 +141,10 @@ class Board {
 
     // ************************************************************************************************************
     // I may need to use async/await to compare each nodes potential paths to the target and then choose the shortest path
+
+    // Maybe.....
+
+    // But I think mainly we need to link each node to the nodes it can access. Like in the graph article
     // ************************************************************************************************************
 
     while (oneMoveAway == false) {
@@ -160,22 +169,19 @@ class Board {
   }
 }
 
-
-
 // ********************************************************************************************
 // Testing Below:
-
 
 let board1 = new Board();
 let testNode = board1.contents[58];
 
-
 // board1.knightMoves([0, 0], [0, 0]);
 board1.knightMoves([0, 0], [1, 2]);
 board1.knightMoves([0, 0], [3, 3]);
+
+// ********************************************************************************************
 board1.knightMoves([0, 0], [3, 4]);
-
-
+// Absolutely not working. The answer to this is bogus^^^^
 
 // board1.knightMoves([0,0], [7,7]);
 // It can't do this one^^^
