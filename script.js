@@ -25,25 +25,65 @@ class Square {
 
   populateWeight(weight) {
     // Need a clearAllWeights function - but that might be on the board class
-    if (this.weight == null) {
+    console.log(`populating weights`)
+
+    if (this.weight == weight){
+        console.log(`called function on an already edited weight`);
+        let possibleMoves = this.possibleMoves;
+        for (let i = 0; i < possibleMoves.length; i++) {
+          let thisNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+              if (thisNode.weight === null){
+                  thisNode.weight = weight - 1;
+              }
+        }
+        for (let i = 0; i < possibleMoves.length; i++) {
+          let thisNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+              thisNode.populateWeight(weight - 1);
+        }
+    }
+
+
+
+    if (this.weight === null) {
       this.weight = weight;
+
+      console.log(this)
       let possibleMoves = this.possibleMoves;
+      console.log(`possibleMoves: ${possibleMoves}`);
+      console.log(possibleMoves)
+      // Accurate so far
+
+
+// First we change the weight on all it's children
+      for (let i = 0; i < possibleMoves.length; i++) {
+        console.log(`triggered`)
+        let thisNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+        console.log(thisNode)
+            if (thisNode.weight === null){
+                thisNode.weight = weight - 1;
+
+            }
+      }
+
+      // Now we call the function on it's children
       for (let i = 0; i < possibleMoves.length; i++) {
         let thisNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
-        // console.log(`thisNode weight: ${thisNode.weight}`);
             thisNode.populateWeight(weight - 1);
       }
+
     }
+
     return
   }
 
 
  logMovesWithWeights(){
     let possibleMoves = this.findPossibleMoves();
-    console.log(possibleMoves)
+    console.log(` for ${this.xCoordinate},${this.yCoordinate}`)
+
     for (let i = 0; i < possibleMoves.length; i++){
         let currentNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
-        console.log(`currentNode: [${currentNode.xCoordinate},${currentNode.xCoordinate}] weight: ${currentNode.weight}`);
+        console.log(`possibleMove[${i}]: [${currentNode.xCoordinate},${currentNode.yCoordinate}] weight: ${currentNode.weight}`);
     }
 }
 
@@ -184,12 +224,15 @@ class Board {
     targetNode.populateWeight(100);
     console.log(`weights received`);
     targetNode.logMovesWithWeights();
+console.log(targetNode.weight)
+
+currentNode.logMovesWithWeights();
 
     // Since we're calling this on targetNode (the last node), we're expecting this should log all nodes it can move to and it should log asll with a score of 99. 
     // It doesn't work.
     // Once we do get logMovesWithWeights function to work, we should be calling it from our starting node
 
-
+// What we need is a queue not a stack
 
 
     return;
@@ -207,5 +250,6 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [3, 3]);
 
 board1.knightMoves([0, 0], [3, 4]);
+// board1.knightMoves([3, 4], [0, 0]);
 
 // board1.knightMoves([0,0], [7,7]);
