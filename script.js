@@ -17,7 +17,24 @@ class Square {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.possibleMoves = this.findPossibleMoves();
+    this.weight = null;
   }
+
+  generateAllWeights() {
+    // This method is called on a square node, so it will take a weight of 100, everything it touches will get a weight of 99, everything touching one of those that isn' already weighted gets a 98 and so on
+    this.weight = 100;
+    let possibleMoves = this.possibleMoves;
+    console.log(possibleMoves);
+
+    for (let i = 0; i < possibleMoves; i++){
+
+    }
+
+  }
+
+  generateThisWeight(previousWeight) {}
+
+  // Need a clearAllWeights function - but that might be on the board class
 
   findPossibleMoves() {
     let xCoordinate = this.xCoordinate;
@@ -119,6 +136,7 @@ class Board {
     let endingX = endPosition[0];
     let endingY = endPosition[1];
     let currentNode = this.findSquare(startingX, startingY);
+    let targetNode = this.findSquare(endingX, endingY);
     let movesCount = 0;
     let moves = [[startingX, startingY]];
 
@@ -139,33 +157,27 @@ class Board {
       return;
     }
 
-    // ************************************************************************************************************
-    // I may need to use async/await to compare each nodes potential paths to the target and then choose the shortest path
+    targetNode.generateAllWeights();
+    // while (oneMoveAway == false) {
+    //   let possibleMoves = currentNode.findPossibleMoves();
+    //   for (let i = 0; i < possibleMoves.length; i++) {
+    //     currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+    //     movesCount++;
+    //     moves.push([possibleMoves[i][0], possibleMoves[i][1]]);
 
-    // Maybe.....
-
-    // But I think mainly we need to link each node to the nodes it can access. Like in the graph article
-    // ************************************************************************************************************
-
-    while (oneMoveAway == false) {
-      let possibleMoves = currentNode.findPossibleMoves();
-      for (let i = 0; i < possibleMoves.length; i++) {
-        currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
-        movesCount++;
-        moves.push([possibleMoves[i][0], possibleMoves[i][1]]);
-
-        if (currentNode.canWeMoveHere(endPosition)) {
-          oneMoveAway = true;
-          moves.push(endPosition);
-          logCount(movesCount);
-          logMoves(moves);
-          return;
-        }
-      }
-    }
-    logCount(movesCount);
-    logMoves(moves);
-    return moves;
+    //     if (currentNode.canWeMoveHere(endPosition)) {
+    //       oneMoveAway = true;
+    //       moves.push(endPosition);
+    //       logCount(movesCount);
+    //       logMoves(moves);
+    //       return;
+    //     }
+    //   }
+    // }
+    // logCount(movesCount);
+    // logMoves(moves);
+    // return moves;
+    return
   }
 }
 
@@ -176,8 +188,8 @@ let board1 = new Board();
 let testNode = board1.contents[58];
 
 // board1.knightMoves([0, 0], [0, 0]);
-board1.knightMoves([0, 0], [1, 2]);
-board1.knightMoves([0, 0], [3, 3]);
+// board1.knightMoves([0, 0], [1, 2]);
+// board1.knightMoves([0, 0], [3, 3]);
 
 // ********************************************************************************************
 board1.knightMoves([0, 0], [3, 4]);
@@ -187,8 +199,7 @@ board1.knightMoves([0, 0], [3, 4]);
 // It can't do this one^^^
 // Takes a while then nothing happens
 
-
 // Bedtime thoughts:
 // Take the target node and give it a score of 100
-// Every node "touching" that gets a score of 99, every node touching one of those gets a 98, etc. 
+// Every node "touching" that gets a score of 99, every node touching one of those gets a 98, etc.
 // Direct the piece to  move from currentNode to the nightest value node
