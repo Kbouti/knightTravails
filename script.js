@@ -92,19 +92,64 @@ class Square {
     }
   }
 
-  findPossibleMoves() {
+
+
+
+
+  findPossibleSquares() {
+    // returns an array containing square objects
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
     let possibleMoves = [];
     if (xCoordinate < 7 && yCoordinate < 6) {
     //   let move1 = [xCoordinate + 1, yCoordinate + 2];
-let board = this.board;
-console.log(this);
-console.log(board);
-let move1 = board.findSquare(xCoordinate+ 1, yCoordinate + 2);
+let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
 
 
 
+      possibleMoves.push(move1);
+    }
+    if (xCoordinate < 6 && yCoordinate < 7) {
+      let move2 = this.board.findSquare(xCoordinate + 2, yCoordinate + 1);
+      possibleMoves.push(move2);
+    }
+    if (xCoordinate < 6 && yCoordinate > 0) {
+      let move3 = this.board.findSquare(xCoordinate + 2, yCoordinate -1);
+      possibleMoves.push(move3);
+    }
+    if (xCoordinate < 7 && yCoordinate > 1) {
+      let move4 = this.board.findSquare(xCoordinate + 1, yCoordinate - 2);
+      possibleMoves.push(move4);
+    }
+    if (xCoordinate > 0 && yCoordinate > 1) {
+      let move5 = this.board.findSquare(xCoordinate - 1, yCoordinate - 2);
+      possibleMoves.push(move5);
+    }
+    if (xCoordinate > 1 && yCoordinate > 0) {
+      let move6 = this.board.findSquare(xCoordinate - 2, yCoordinate -1);
+      possibleMoves.push(move6);
+    }
+    if (xCoordinate > 1 && yCoordinate < 7) {
+      let move7 = this.board.findSquare(xCoordinate - 2, yCoordinate + 1);
+      possibleMoves.push(move7);
+    }
+    if (xCoordinate > 0 && yCoordinate < 6) {
+      let move8 = this.board.findSquare(xCoordinate - 1, yCoordinate + 2);
+      possibleMoves.push(move8);
+    }
+    return possibleMoves;
+  }
+
+
+
+
+  findPossibleMoves() {
+    // Returns an array containing x and y cooridnates
+    let xCoordinate = this.xCoordinate;
+    let yCoordinate = this.yCoordinate;
+    let possibleMoves = [];
+    if (xCoordinate < 7 && yCoordinate < 6) {
+      let move1 = [xCoordinate + 1, yCoordinate + 2];
       possibleMoves.push(move1);
     }
     if (xCoordinate < 6 && yCoordinate < 7) {
@@ -170,7 +215,6 @@ class Board {
   }
 
   createBoard() {
-    console.log(`creating board`);
     let board = [];
     let x = 0;
     let y = 0;
@@ -188,9 +232,7 @@ class Board {
     for (let i = 0; i < 64; i++) {
       let square = board[i];
       square.board = this;
-      // console.log(square)
     }
-    console.log(`done creating board`)
     return board;
   }
 
@@ -248,6 +290,10 @@ class Board {
     // sort possibleMoves
     // currentNode = node W/ highest weight
 
+
+console.log(currentNode.findPossibleMoves())
+
+
     // while (!oneMoveAway) {
 
     //     let bestMove = 
@@ -276,7 +322,7 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [1, 2]);
 // board1.knightMoves([0, 0], [3, 3]);
 
-// board1.knightMoves([0, 0], [3, 4]);
+board1.knightMoves([0, 0], [3, 4]);
 // board1.knightMoves([3, 4], [0, 0]);
 
 // board1.knightMoves([0, 0], [7, 7]);
