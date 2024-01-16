@@ -260,10 +260,11 @@ class Board {
     // ********************************************************************************************
     // Else increment movesCount and check if one of our moves is targetNode
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
-    movesCount++;
     // ********************************************************************************************
     // If one of our nodes is targetNode, move there and be done
     if (oneMoveAway) {
+      console.log(`one move away`);
+      movesCount++;
       moves.push([endingX, endingY]);
       logCount(movesCount);
       logMoves(moves);
@@ -277,14 +278,29 @@ class Board {
     // sort possibleMoves
     // currentNode = node W/ highest weight
 
+    // while (!oneMoveAway) {
     let possibleSquares = currentNode.findPossibleSquares();
-    possibleSquares = possibleSquares.sort(compareFunction)
+    possibleSquares = possibleSquares.sort(compareFunction);
 
 
-    // currentNode.logMovesWithWeights();
-
-    // Now we need to find the possible move with highest weight
-    // So currentNode = sort possible moves
+    currentNode = possibleSquares[0];
+    movesCount++;
+    moves.push([currentNode.xCoordinate, currentNode.yCoordinate]);
+    //   logCount(movesCount);
+    //   logMoves(moves);
+    let foundIt = false;
+    while (foundIt == false) {
+      let nextOptions = currentNode.findPossibleSquares();
+      if (currentNode.canWeMoveHere(endPosition)) {
+        movesCount++;
+        moves.push([endingX, endingY]);
+        logCount(movesCount);
+        logMoves(moves);
+        foundIt = true;
+        return;
+      }
+      currentNode = nextOptions.sort(compareFunction)[0];
+    }
 
     return;
   }
@@ -301,6 +317,7 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [3, 3]);
 
 // board1.knightMoves([0, 0], [3, 7]);
-board1.knightMoves([3, 4], [0, 0]);
+// board1.knightMoves([3, 4], [0, 0]);
+board1.knightMoves([0, 0], [4, 1]);
 
 // board1.knightMoves([0, 0], [7, 7]);
