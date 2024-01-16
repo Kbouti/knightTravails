@@ -186,3 +186,9 @@ board1.knightMoves([0, 0], [3, 4]);
 // board1.knightMoves([0,0], [7,7]);
 // It can't do this one^^^
 // Takes a while then nothing happens
+
+
+// Bedtime thoughts:
+// Take the target node and give it a score of 100
+// Every node "touching" that gets a score of 99, every node touching one of those gets a 98, etc. 
+// Direct the piece to  move from currentNode to the nightest value node
