@@ -37,6 +37,17 @@ class Square {
     return
   }
 
+
+ logMovesWithWeights(){
+    let possibleMoves = this.findPossibleMoves();
+    console.log(possibleMoves)
+    for (let i = 0; i < possibleMoves.length; i++){
+        let currentNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+        console.log(`currentNode: [${currentNode.xCoordinate},${currentNode.xCoordinate}] weight: ${currentNode.weight}`);
+    }
+}
+
+
   findPossibleMoves() {
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
@@ -172,6 +183,11 @@ class Board {
 
     targetNode.populateWeight(100);
     console.log(`weights received`);
+    targetNode.logMovesWithWeights();
+
+    // Since we're calling this on targetNode (the last node), we're expecting this should log all nodes it can move to and it should log asll with a score of 99. 
+    // It doesn't work.
+    // Once we do get logMovesWithWeights function to work, we should be calling it from our starting node
 
 
 
