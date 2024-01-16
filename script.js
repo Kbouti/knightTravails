@@ -11,24 +11,30 @@ function logMoves(array) {
   console.log(string);
 }
 
+function findHighest(a, b){
+    if (a.weight > b.weight){
+        return 1
+    } 
+    return -1
+}
+
+
 class Square {
   constructor(index, xCoordinate, yCoordinate) {
     this.index = index;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.board;
-    this.possibleMoves = this.findPossibleMoves();
+    // this.possibleMoves = this.findPossibleMoves();
     this.weight = null;
   }
 
-
-    // Need a clearAllWeights function - but that might be on the board class
-
+  // Need a clearAllWeights function - but that might be on the board class
 
   populateWeight(weight) {
     if (this.weight === weight) {
       // console.log(`called function on an already edited weight`);
-      let possibleMoves = this.possibleMoves;
+      let possibleMoves = this.findPossibleMoves();
       for (let i = 0; i < possibleMoves.length; i++) {
         let thisNode = this.board.findSquare(
           possibleMoves[i][0],
@@ -49,7 +55,7 @@ class Square {
 
     if (this.weight === null) {
       this.weight = weight;
-      let possibleMoves = this.possibleMoves;
+      let possibleMoves = this.findPossibleMoves();
       // Accurate so far
       for (let i = 0; i < possibleMoves.length; i++) {
         let thisNode = this.board.findSquare(
@@ -91,7 +97,14 @@ class Square {
     let yCoordinate = this.yCoordinate;
     let possibleMoves = [];
     if (xCoordinate < 7 && yCoordinate < 6) {
-      let move1 = [xCoordinate + 1, yCoordinate + 2];
+    //   let move1 = [xCoordinate + 1, yCoordinate + 2];
+let board = this.board;
+console.log(this);
+console.log(board);
+let move1 = board.findSquare(xCoordinate+ 1, yCoordinate + 2);
+
+
+
       possibleMoves.push(move1);
     }
     if (xCoordinate < 6 && yCoordinate < 7) {
@@ -139,6 +152,13 @@ class Square {
     return canWeMove;
   }
 
+
+  findBestMove(){
+    let possibleMoves = this.findPossibleMoves();
+
+  }
+
+
   async pathToTarget(targetPosition) {
     //I think we need an async function to call here on the square so can ask for several possible paths and compare to find the shortest
   }
@@ -170,7 +190,7 @@ class Board {
       square.board = this;
       // console.log(square)
     }
-
+    console.log(`done creating board`)
     return board;
   }
 
@@ -198,6 +218,9 @@ class Board {
     let movesCount = 0;
     let moves = [[startingX, startingY]];
 
+    // ********************************************************************************************
+    // If Start and end are same, return 0 moves
+
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
       logCount(movesCount);
@@ -205,31 +228,39 @@ class Board {
       return;
     }
 
-    movesCount++;
+    // ********************************************************************************************
+    // Else increment movesCount and check if one of our moves is targetNode
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
-
+    movesCount++;
+    // ********************************************************************************************
+    // If one of our nodes is targetNode, move there and be done
     if (oneMoveAway) {
       moves.push([endingX, endingY]);
       logCount(movesCount);
       logMoves(moves);
       return;
     }
-
     // ********************************************************************************************
-    // Here we go:
-
+    // Create weights based on distance to targetNode
     targetNode.populateWeight(100);
-    console.log(`weights received`);
+    // ********************************************************************************************
+    // While possibleMoves does not contain targetNode
+    // sort possibleMoves
+    // currentNode = node W/ highest weight
+
+    // while (!oneMoveAway) {
+
+    //     let bestMove = 
+
+    //     currentNode.logMovesWithWeights();
+
+    // }
+
     // targetNode.logMovesWithWeights();
 
     currentNode.logMovesWithWeights();
     // Now we need to find the possible move with highest weight
     // So currentNode = sort possible moves
-
-
-// While possibleMoves does not contain targetNode
-// sort possibleMoves
-// currentNode = node W/ highest weight
 
     return;
   }
@@ -246,6 +277,6 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [3, 3]);
 
 // board1.knightMoves([0, 0], [3, 4]);
-board1.knightMoves([3, 4], [0, 0]);
+// board1.knightMoves([3, 4], [0, 0]);
 
 // board1.knightMoves([0, 0], [7, 7]);
