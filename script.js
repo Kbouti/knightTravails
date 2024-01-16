@@ -20,19 +20,32 @@ class Square {
     this.weight = null;
   }
 
+
+// possibleMoves is returning an array of x and y values, we need references to nodes
+
+
   generateAllWeights() {
     // This method is called on a square node, so it will take a weight of 100, everything it touches will get a weight of 99, everything touching one of those that isn' already weighted gets a 98 and so on
     this.weight = 100;
     let possibleMoves = this.possibleMoves;
     console.log(possibleMoves);
 
-    for (let i = 0; i < possibleMoves; i++){
+    for (let i = 0; i < possibleMoves.length; i++){
+        console.log(`something`)
 
+        let xValue = possibleMoves[i][0];
+        let yValue = possibleMoves[i][1];
+
+console.log(this)
+
+        let thisNode = this.findSquare(xValue, yValue);
+        console.log(thisNode.weight)
+        console.log(`something`)
     }
 
   }
 
-  generateThisWeight(previousWeight) {}
+  populateThisWeight(previousWeight) {}
 
   // Need a clearAllWeights function - but that might be on the board class
 
