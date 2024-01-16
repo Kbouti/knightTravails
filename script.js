@@ -11,13 +11,12 @@ function logMoves(array) {
   console.log(string);
 }
 
-function findHighest(a, b){
-    if (a.weight > b.weight){
-        return 1
-    } 
-    return -1
+function compareFunction(a, b) {
+  if (a.weight > b.weight) {
+    return -1;
+  }
+  return 1;
 }
-
 
 class Square {
   constructor(index, xCoordinate, yCoordinate) {
@@ -92,20 +91,14 @@ class Square {
     }
   }
 
-
-
-
-
   findPossibleSquares() {
     // returns an array containing square objects
     let xCoordinate = this.xCoordinate;
     let yCoordinate = this.yCoordinate;
     let possibleMoves = [];
     if (xCoordinate < 7 && yCoordinate < 6) {
-    //   let move1 = [xCoordinate + 1, yCoordinate + 2];
-let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
-
-
+      //   let move1 = [xCoordinate + 1, yCoordinate + 2];
+      let move1 = this.board.findSquare(xCoordinate + 1, yCoordinate + 2);
 
       possibleMoves.push(move1);
     }
@@ -114,7 +107,7 @@ let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
       possibleMoves.push(move2);
     }
     if (xCoordinate < 6 && yCoordinate > 0) {
-      let move3 = this.board.findSquare(xCoordinate + 2, yCoordinate -1);
+      let move3 = this.board.findSquare(xCoordinate + 2, yCoordinate - 1);
       possibleMoves.push(move3);
     }
     if (xCoordinate < 7 && yCoordinate > 1) {
@@ -126,7 +119,7 @@ let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
       possibleMoves.push(move5);
     }
     if (xCoordinate > 1 && yCoordinate > 0) {
-      let move6 = this.board.findSquare(xCoordinate - 2, yCoordinate -1);
+      let move6 = this.board.findSquare(xCoordinate - 2, yCoordinate - 1);
       possibleMoves.push(move6);
     }
     if (xCoordinate > 1 && yCoordinate < 7) {
@@ -139,9 +132,6 @@ let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
     }
     return possibleMoves;
   }
-
-
-
 
   findPossibleMoves() {
     // Returns an array containing x and y cooridnates
@@ -197,12 +187,9 @@ let move1 = this.board.findSquare(xCoordinate+ 1, yCoordinate + 2);
     return canWeMove;
   }
 
-
-  findBestMove(){
-    let possibleMoves = this.findPossibleMoves();
-
+  findBestMove() {
+    let possibleMoves = this.findPossibleSquares();
   }
-
 
   async pathToTarget(targetPosition) {
     //I think we need an async function to call here on the square so can ask for several possible paths and compare to find the shortest
@@ -290,21 +277,12 @@ class Board {
     // sort possibleMoves
     // currentNode = node W/ highest weight
 
+    let possibleSquares = currentNode.findPossibleSquares();
+    possibleSquares = possibleSquares.sort(compareFunction)
 
-console.log(currentNode.findPossibleMoves())
 
+    // currentNode.logMovesWithWeights();
 
-    // while (!oneMoveAway) {
-
-    //     let bestMove = 
-
-    //     currentNode.logMovesWithWeights();
-
-    // }
-
-    // targetNode.logMovesWithWeights();
-
-    currentNode.logMovesWithWeights();
     // Now we need to find the possible move with highest weight
     // So currentNode = sort possible moves
 
@@ -322,7 +300,7 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [1, 2]);
 // board1.knightMoves([0, 0], [3, 3]);
 
-board1.knightMoves([0, 0], [3, 4]);
-// board1.knightMoves([3, 4], [0, 0]);
+// board1.knightMoves([0, 0], [3, 7]);
+board1.knightMoves([3, 4], [0, 0]);
 
 // board1.knightMoves([0, 0], [7, 7]);
