@@ -16,38 +16,26 @@ class Square {
     this.index = index;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
+    this.board;
     this.possibleMoves = this.findPossibleMoves();
     this.weight = null;
   }
 
 
-// possibleMoves is returning an array of x and y values, we need references to nodes
 
-
-  generateAllWeights() {
-    // This method is called on a square node, so it will take a weight of 100, everything it touches will get a weight of 99, everything touching one of those that isn' already weighted gets a 98 and so on
-    this.weight = 100;
-    let possibleMoves = this.possibleMoves;
-    console.log(possibleMoves);
-
-    for (let i = 0; i < possibleMoves.length; i++){
-        console.log(`something`)
-
-        let xValue = possibleMoves[i][0];
-        let yValue = possibleMoves[i][1];
-
-console.log(this)
-
-        let thisNode = this.findSquare(xValue, yValue);
-        console.log(thisNode.weight)
-        console.log(`something`)
+  populateWeight(weight) {
+    // Need a clearAllWeights function - but that might be on the board class
+    if (this.weight == null) {
+      this.weight = weight;
+      let possibleMoves = this.possibleMoves;
+      for (let i = 0; i < possibleMoves.length; i++) {
+        let thisNode = this.board.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
+        // console.log(`thisNode weight: ${thisNode.weight}`);
+            thisNode.populateWeight(weight - 1);
+      }
     }
-
+    return
   }
-
-  populateThisWeight(previousWeight) {}
-
-  // Need a clearAllWeights function - but that might be on the board class
 
   findPossibleMoves() {
     let xCoordinate = this.xCoordinate;
@@ -113,6 +101,7 @@ class Board {
   }
 
   createBoard() {
+    console.log(`creating board`);
     let board = [];
     let x = 0;
     let y = 0;
@@ -126,6 +115,13 @@ class Board {
         y = 0;
       }
     }
+
+    for (let i = 0; i < 64; i++) {
+      let square = board[i];
+      square.board = this;
+      // console.log(square)
+    }
+
     return board;
   }
 
@@ -170,27 +166,17 @@ class Board {
       return;
     }
 
-    targetNode.generateAllWeights();
-    // while (oneMoveAway == false) {
-    //   let possibleMoves = currentNode.findPossibleMoves();
-    //   for (let i = 0; i < possibleMoves.length; i++) {
-    //     currentNode = this.findSquare(possibleMoves[i][0], possibleMoves[i][1]);
-    //     movesCount++;
-    //     moves.push([possibleMoves[i][0], possibleMoves[i][1]]);
 
-    //     if (currentNode.canWeMoveHere(endPosition)) {
-    //       oneMoveAway = true;
-    //       moves.push(endPosition);
-    //       logCount(movesCount);
-    //       logMoves(moves);
-    //       return;
-    //     }
-    //   }
-    // }
-    // logCount(movesCount);
-    // logMoves(moves);
-    // return moves;
-    return
+// ********************************************************************************************
+// Here we go: 
+
+    targetNode.populateWeight(100);
+    console.log(`weights received`);
+
+
+
+
+    return;
   }
 }
 
@@ -204,15 +190,6 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [1, 2]);
 // board1.knightMoves([0, 0], [3, 3]);
 
-// ********************************************************************************************
 board1.knightMoves([0, 0], [3, 4]);
-// Absolutely not working. The answer to this is bogus^^^^
 
 // board1.knightMoves([0,0], [7,7]);
-// It can't do this one^^^
-// Takes a while then nothing happens
-
-// Bedtime thoughts:
-// Take the target node and give it a score of 100
-// Every node "touching" that gets a score of 99, every node touching one of those gets a 98, etc.
-// Direct the piece to  move from currentNode to the nightest value node
