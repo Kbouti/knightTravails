@@ -132,7 +132,6 @@ class Square {
     return possibleMoves;
   }
 
-
   // Can probably get rid of this function and substitute the one above^ This does the same  but outputs x and y cooridnates
   findPossibleMoves() {
     // Returns an array containing x and y cooridnates
@@ -187,7 +186,6 @@ class Square {
     }
     return canWeMove;
   }
-
 }
 
 class Board {
@@ -228,13 +226,22 @@ class Board {
     }
   }
 
+  resetWeights() {
+    let contents = this.contents;
+    for (let i = 0; i < contents.length; i++) {
+      contents[i].weight = null;
+    }
+  }
+
   knightMoves(startPosition, endPosition) {
     // Takes two arrays as arguments. Each array is 2 numbers, the xCoordiante and the yCoordinate
     let startingX = startPosition[0];
     let startingY = startPosition[1];
     let endingX = endPosition[0];
     let endingY = endPosition[1];
-    console.log(`searching for path between [${startingX}, ${startingY}] and [${endingX},${endingY}]`);
+    console.log(
+      `searching for path between [${startingX}, ${startingY}] and [${endingX},${endingY}]`
+    );
     let currentNode = this.findSquare(startingX, startingY);
     let targetNode = this.findSquare(endingX, endingY);
     let movesCount = 0;
@@ -259,7 +266,7 @@ class Board {
       currentNode = possibleSquares[0];
       movesCount++;
       moves.push([currentNode.xCoordinate, currentNode.yCoordinate]);
-      if (currentNode.canWeMoveHere(endPosition)){
+      if (currentNode.canWeMoveHere(endPosition)) {
         withinReach = true;
       }
     }
@@ -267,13 +274,10 @@ class Board {
     moves.push([endingX, endingY]);
     logCount(movesCount);
     logMoves(moves);
+    this.resetWeights();
     return;
   }
 }
-
-
-
-// Complete EXCEPT I need to write a function that resets the weights of all squares back to null after the path has been found. 
 
 
 // ********************************************************************************************
@@ -290,10 +294,8 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [4, 1]);
 board1.knightMoves([3, 3], [4, 3]);
 
-
-
 // board1.knightMoves([0, 0], [7, 7]);
-// board1.knightMoves([7, 7], [0, 0]);
+board1.knightMoves([7, 7], [0, 0]);
 
 // Their answer to the above is different from mine but it's the same number of steps:
 //  [[0,0],[2,1],[4,2],[6,3],[4,4],[6,5],[7,7]]
