@@ -28,8 +28,6 @@ class Square {
     this.weight = null;
   }
 
-  // Need a clearAllWeights function - but that might be on the board class
-
   populateWeight(weight) {
     if (this.weight === weight) {
       // console.log(`called function on an already edited weight`);
@@ -91,6 +89,7 @@ class Square {
     }
   }
 
+  // Outputs an array of each node that can be visited from this one. Same as below but outputs objects not coordinates
   findPossibleSquares() {
     // returns an array containing square objects
     let xCoordinate = this.xCoordinate;
@@ -133,6 +132,8 @@ class Square {
     return possibleMoves;
   }
 
+
+  // Can probably get rid of this function and substitute the one above^ This does the same  but outputs x and y cooridnates
   findPossibleMoves() {
     // Returns an array containing x and y cooridnates
     let xCoordinate = this.xCoordinate;
@@ -187,13 +188,6 @@ class Square {
     return canWeMove;
   }
 
-  findBestMove() {
-    let possibleMoves = this.findPossibleSquares();
-  }
-
-  async pathToTarget(targetPosition) {
-    //I think we need an async function to call here on the square so can ask for several possible paths and compare to find the shortest
-  }
 }
 
 class Board {
@@ -235,39 +229,30 @@ class Board {
   }
 
   knightMoves(startPosition, endPosition) {
-    // Takes two arrays as arguments
-    // Each array is 2 numbers, the xCoordiante and the yCoordinate
-
+    // Takes two arrays as arguments. Each array is 2 numbers, the xCoordiante and the yCoordinate
     let startingX = startPosition[0];
     let startingY = startPosition[1];
     let endingX = endPosition[0];
     let endingY = endPosition[1];
+    console.log(`searching for path between [${startingX}, ${startingY}] and [${endingX},${endingY}]`);
     let currentNode = this.findSquare(startingX, startingY);
     let targetNode = this.findSquare(endingX, endingY);
     let movesCount = 0;
     let moves = [[startingX, startingY]];
-
-    // ********************************************************************************************
-    // If Start and end are same, return 0 moves
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
       logCount(movesCount);
       logMoves(moves);
       return;
     }
-
-    // ********************************************************************************************
-    // Can we move straight to end?
     targetNode.populateWeight(100);
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
-
     let withinReach;
     if (oneMoveAway) {
       withinReach = true;
     } else {
       withinReach = false;
     }
-    // while we're more than one move away....
     while (!withinReach) {
       let possibleSquares = currentNode.findPossibleSquares();
       possibleSquares = possibleSquares.sort(compareFunction);
@@ -278,21 +263,21 @@ class Board {
         withinReach = true;
       }
     }
-
-    // if (oneMoveAway) {
-    console.log(`one move away`);
     movesCount++;
     moves.push([endingX, endingY]);
     logCount(movesCount);
     logMoves(moves);
     return;
-    // }
   }
 }
 
+
+
+// Complete EXCEPT I need to write a function that resets the weights of all squares back to null after the path has been found. 
+
+
 // ********************************************************************************************
 // Testing Below:
-console.log(`start testing`);
 let board1 = new Board();
 let testNode = board1.contents[58];
 
@@ -301,7 +286,15 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [3, 3]);
 
 // board1.knightMoves([0, 0], [3, 7]);
-board1.knightMoves([3, 4], [0, 0]);
+// board1.knightMoves([3, 4], [0, 0]);
 // board1.knightMoves([0, 0], [4, 1]);
+board1.knightMoves([3, 3], [4, 3]);
+
+
 
 // board1.knightMoves([0, 0], [7, 7]);
+// board1.knightMoves([7, 7], [0, 0]);
+
+// Their answer to the above is different from mine but it's the same number of steps:
+//  [[0,0],[2,1],[4,2],[6,3],[4,4],[6,5],[7,7]]
+//  [[0,0],[2,1],[4,2],[6,3],[7,5],[5,6],[7,7]]
