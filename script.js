@@ -249,7 +249,6 @@ class Board {
 
     // ********************************************************************************************
     // If Start and end are same, return 0 moves
-
     if (startingX === endingX && startingY === endingY) {
       console.log(`Start and end are the same square`);
       logCount(movesCount);
@@ -258,52 +257,33 @@ class Board {
     }
 
     // ********************************************************************************************
-    // Else increment movesCount and check if one of our moves is targetNode
+    // Can we move straight to end?
+    targetNode.populateWeight(100);
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
-    // ********************************************************************************************
-    // If one of our nodes is targetNode, move there and be done
-    if (oneMoveAway) {
+
+
+
+let withinReach = false;
+
+    // while we're more than one move away....
+    while (!oneMoveAway) {
+      let possibleSquares = currentNode.findPossibleSquares();
+      possibleSquares = possibleSquares.sort(compareFunction);
+      currentNode = possibleSquares[0];
+      movesCount++;
+      moves.push([currentNode.xCoordinate, currentNode.yCoordinate]);
+    }
+
+    // if (oneMoveAway) {
       console.log(`one move away`);
       movesCount++;
       moves.push([endingX, endingY]);
       logCount(movesCount);
       logMoves(moves);
       return;
-    }
-    // ********************************************************************************************
-    // Create weights based on distance to targetNode
-    targetNode.populateWeight(100);
-    // ********************************************************************************************
-    // While possibleMoves does not contain targetNode
-    // sort possibleMoves
-    // currentNode = node W/ highest weight
-
-    // while (!oneMoveAway) {
-    let possibleSquares = currentNode.findPossibleSquares();
-    possibleSquares = possibleSquares.sort(compareFunction);
-
-
-    currentNode = possibleSquares[0];
-    movesCount++;
-    moves.push([currentNode.xCoordinate, currentNode.yCoordinate]);
-    //   logCount(movesCount);
-    //   logMoves(moves);
-    let foundIt = false;
-    while (foundIt == false) {
-      let nextOptions = currentNode.findPossibleSquares();
-      if (currentNode.canWeMoveHere(endPosition)) {
-        movesCount++;
-        moves.push([endingX, endingY]);
-        logCount(movesCount);
-        logMoves(moves);
-        foundIt = true;
-        return;
-      }
-      currentNode = nextOptions.sort(compareFunction)[0];
-    }
-
-    return;
+    // }
   }
+
 }
 
 // ********************************************************************************************
@@ -318,6 +298,6 @@ let testNode = board1.contents[58];
 
 // board1.knightMoves([0, 0], [3, 7]);
 // board1.knightMoves([3, 4], [0, 0]);
-board1.knightMoves([0, 0], [4, 1]);
+// board1.knightMoves([0, 0], [4, 1]);
 
 // board1.knightMoves([0, 0], [7, 7]);
