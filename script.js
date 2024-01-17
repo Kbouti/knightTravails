@@ -261,29 +261,33 @@ class Board {
     targetNode.populateWeight(100);
     let oneMoveAway = currentNode.canWeMoveHere(endPosition);
 
-
-
-let withinReach = false;
-
+    let withinReach;
+    if (oneMoveAway) {
+      withinReach = true;
+    } else {
+      withinReach = false;
+    }
     // while we're more than one move away....
-    while (!oneMoveAway) {
+    while (!withinReach) {
       let possibleSquares = currentNode.findPossibleSquares();
       possibleSquares = possibleSquares.sort(compareFunction);
       currentNode = possibleSquares[0];
       movesCount++;
       moves.push([currentNode.xCoordinate, currentNode.yCoordinate]);
+      if (currentNode.canWeMoveHere(endPosition)){
+        withinReach = true;
+      }
     }
 
     // if (oneMoveAway) {
-      console.log(`one move away`);
-      movesCount++;
-      moves.push([endingX, endingY]);
-      logCount(movesCount);
-      logMoves(moves);
-      return;
+    console.log(`one move away`);
+    movesCount++;
+    moves.push([endingX, endingY]);
+    logCount(movesCount);
+    logMoves(moves);
+    return;
     // }
   }
-
 }
 
 // ********************************************************************************************
@@ -297,7 +301,7 @@ let testNode = board1.contents[58];
 // board1.knightMoves([0, 0], [3, 3]);
 
 // board1.knightMoves([0, 0], [3, 7]);
-// board1.knightMoves([3, 4], [0, 0]);
+board1.knightMoves([3, 4], [0, 0]);
 // board1.knightMoves([0, 0], [4, 1]);
 
 // board1.knightMoves([0, 0], [7, 7]);
